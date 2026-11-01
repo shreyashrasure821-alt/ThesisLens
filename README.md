@@ -40,36 +40,63 @@ frontend/public/   Frontend static assets
 requirements.txt   Python backend and test dependencies
 ```
 
-## Backend setup and run
+## Local Setup & Running the Application
 
-Use Python 3.12. From the project root, create and activate a virtual environment, then install the pinned dependencies:
+### Prerequisites
+
+- Python 3.12 installed on your computer
+- Node.js and npm
+- A contact email to include in the SEC request user agent
+
+### Start the FastAPI backend
+
+Open a PowerShell terminal at the project root. Create and activate the virtual environment, install the pinned backend and test dependencies, set the SEC user agent, then start the API. Replace the example Python executable path below with the path to your own Python 3.12 executable if it is installed elsewhere:
 
 ```powershell
-py -3.12 -m venv .venv
+Set-Location 'C:\Users\shrey\ThesisLens'
+& "C:\Path\To\Python312\python.exe" -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-```
-
-Set the SEC user agent in the same PowerShell session before starting the API. Use an application label and a contact email you control:
-
-```powershell
-$env:SEC_USER_AGENT = "ThesisLens/0.1 contact your-email@example.com"
+$env:SEC_USER_AGENT = "ThesisLens/0.1 Contact name@your-domain.example"
 python -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-The API will be available at `http://127.0.0.1:8000`; FastAPI documentation is at `/docs`. SEC requests require `SEC_USER_AGENT` to identify the application and provide a contact email. The variable is not read from a `.env` file automatically.
+The email shown is a placeholder. Replace it with a contact email you control. Set `SEC_USER_AGENT` in the same PowerShell session used to run the backend. The application does not load this setting from a `.env` file automatically.
 
-## Frontend setup and run
+### Start the React/Vite frontend
 
-In another terminal, install the frontend packages and start Vite:
+Open a **separate** PowerShell terminal and run:
 
 ```powershell
-cd frontend
+Set-Location 'C:\Users\shrey\ThesisLens\frontend'
 npm install
 npm run dev
 ```
 
-The Vite development server proxies `/api` and `/health` requests to the backend at `http://127.0.0.1:8000`.
+Both the backend and frontend must be running for the dashboard and analysis workflows to work. Vite proxies `/api` and `/health` requests to the backend at `http://127.0.0.1:8000`.
+
+### Local URLs
+
+- Application: [http://localhost:5173/](http://localhost:5173/)
+- Backend health: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+- Swagger API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+## Dashboard & Analysis Walkthrough
+
+1. **Select a company.** Choose Microsoft (MSFT), Apple (AAPL), NVIDIA (NVDA), Amazon (AMZN), or Alphabet (GOOGL). The dashboard and thesis evidence use the selected company.
+2. **Review the financial snapshot.** The dashboard shows annual revenue and net income, along with historical year-over-year growth where comparable data is available.
+3. **Submit a natural-language thesis.** Enter a thesis in the Thesis Lab and submit it for analysis.
+4. **Review extracted claims and categories.** ThesisLens splits the text into claims and assigns categories using rule-based keyword classification.
+5. **Read the evidence directions.** Revenue and profitability evidence can be marked supporting, contradicting, or neutral based on historical metrics. Neutral evidence gives context; historical results do not verify claims about future performance.
+6. **Review unsupported claims and research gaps.** Categories without a supported evidence source are explicitly identified and may include suggestions for further research.
+7. **Review the overall thesis assessment.** The assessment summarizes evidence coverage and research gaps, with limitations explaining what the available historical data can and cannot establish.
+
+ThesisLens is an evidence-first research tool. It is not a stock prediction system and does not provide Buy/Sell/Hold recommendations.
+
+## Screenshots
+
+- **Dashboard screenshot:** _Placeholder — insert an actual dashboard screenshot after capturing one._
+- **Thesis analysis screenshot:** _Placeholder — insert an actual thesis analysis screenshot after capturing one._
 
 ## Tests and frontend checks
 
